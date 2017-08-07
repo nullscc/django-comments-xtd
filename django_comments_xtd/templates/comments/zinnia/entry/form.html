@@ -6,7 +6,6 @@
     {{ form.non_field_errors }}
   </div>
   {% endif %}
-  <fieldset>
     <a id="cancel-comment-reply" href="#comment-form" style="display:none;">{% trans "Cancel reply" %}</a>
     <legend>{% trans "Post your comment" %}</legend>
     <input type="hidden" name="next" value="{% url 'zinnia:comment_success' %}"/>
@@ -14,9 +13,11 @@
     {% if field.is_hidden %}{{ field }}{% else %}
     {% if user.email and field.name in "namemailurl" %}{% else %}
     <div{% if field.errors %} class="error"{% endif %}{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
+    <div class="form-group">
       {{ field.label_tag }}
       {% if field.errors %}{{ field.errors }}{% endif %}
       {{ field }}
+    </div>
     </div>
     {% endif %}
     {% endif %}
@@ -30,5 +31,4 @@
       <input type="submit" name="submit" class="submit-post" value="{% trans "Post" %}" />
       <input type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}" />
     </p>
-  </fieldset>
 </form>

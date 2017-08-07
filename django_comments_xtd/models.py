@@ -109,6 +109,7 @@ class XtdComment(Comment):
         return ("comments-xtd-reply", None, {"cid": self.pk})
 
     def allow_thread(self):
+        print("-----in allow_thread", self.level, max_thread_level_for_content_type(self.content_type))
         if self.level < max_thread_level_for_content_type(self.content_type):
             return True
         else:
