@@ -11,7 +11,7 @@ from django_comments.models import Comment, CommentFlag
 from django_comments.signals import comment_was_flagged
 
 from django_comments_xtd.conf import settings
-
+from django.utils.encoding import force_text
 
 LIKEDIT_FLAG = "I liked it"
 DISLIKEDIT_FLAG = "I disliked it"
@@ -109,11 +109,19 @@ class XtdComment(Comment):
         return ("comments-xtd-reply", None, {"cid": self.pk})
 
     def allow_thread(self):
-        print("-----in allow_thread", self.level, max_thread_level_for_content_type(self.content_type))
         if self.level < max_thread_level_for_content_type(self.content_type):
             return True
         else:
             return False
+
+    @property
+    def markdowncomment(self):
+        try:
+            import markdown
+        except ImportError:
+            return self.comment
+
+        return markdown.markdown(force_text(self.comment), extensions=[])
 
     @classmethod
     def tree_from_queryset(cls, queryset, with_flagging=False,
