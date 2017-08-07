@@ -1,5 +1,4 @@
 import json
-import hashlib
 import re
 
 try:
@@ -20,7 +19,7 @@ except ImportError:
 from django_comments.forms import CommentSecurityForm
 from django_comments_xtd import get_model as get_comment_model
 from django_comments_xtd.conf import settings
-
+from hashlib import md5
 
 XtdComment = get_comment_model()
 
@@ -534,10 +533,12 @@ def get_commentbox_props(parser, token):
 # ----------------------------------------------------------------------
 @register.filter
 def xtd_comment_gravatar_url(email, size=48):
-    return ("http://www.gravatar.com/avatar/%s?%s&d=mm" %
-            (hashlib.md5(email.lower().encode('utf-8')).hexdigest(),
-             urlencode({'s': str(size)})))
+    url = '%s.gravatar.com/avatar/%s' % (
+        'http://www', md5(email.strip().lower().encode('utf-8')).hexdigest())
+    options = {'s': size, 'r': "G"}
 
+    url = '%s?%s' % (url, urlencode(options))
+    return url.replace('&', '&amp;')
 
 # ----------------------------------------------------------------------
 @register.filter
