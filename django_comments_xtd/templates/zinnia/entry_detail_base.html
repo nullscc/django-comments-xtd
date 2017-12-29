@@ -12,32 +12,8 @@
 
 
 {% block entry-comments %}
-<section id="comments">
-  <h3>{% trans "Comments" %}</h3>
-  {% if object.comment_count %}
-  {% with comment_list=object.comments %}
-  {% block comments-loop %}
-  {% render_xtdcomment_tree for object using django_comments_xtd/comment_tree.html %}
-  {% endblock comments-loop %}
-  {% endwith %}
-    {% if not object.comments_are_open %}
-  <p>{% trans "Comments are closed." %}</p>
-    {% endif %}
-  {% else %}
-    {% if object.comments_are_open %}
-  <p>{% trans "No comments yet." %}</p>
-    {% else %}
-  <p>{% trans "Comments are closed." %}</p>
-    {% endif %}
-  {% endif %}
-</section>
 {% endblock entry-comments %}
 
 {% block entry-comments-form %}
-<div id="commentform">
-{% if object.comments_are_open %}
-{% render_comment_form for object %}
-{% endif %}
-</div>
 {% endblock entry-comments-form %}
 
